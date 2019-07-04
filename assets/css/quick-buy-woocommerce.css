@@ -59,3 +59,7 @@
 }
 
 .modal-body {padding: 2px 16px;}
+
+#myModal input{
+	width: 100%;
+}
