@@ -18,10 +18,18 @@ class quick_buy_woocommerce{
 		return $instance;
 	}
 	public static function plugin_activation(){
-
+		if (version_compare($GLOBALS['wp_version'], QBW_MINIMUM_WP_VERSION, '<')) {
+		    die('Error version WP !!');
+		}
+		$version = get_option('quick_buy_woocommerce');
+		if (!$version) {
+		    add_option('quick_buy_woocommerce', QBW_VERSION);
+		} else {
+		    update_option('quick_buy_woocommerce', QBW_VERSION);
+		}
 	}
 	public static function plugin_deactivation(){
-
+        delete_option('quick_buy_woocommerce');
 	}
 	public static function quick_buy_css(){
 		add_action( 'wp_enqueue_scripts', function(){
