@@ -13,6 +13,7 @@ class quick_buy_woocommerce{
 	public static function run(){
 		$instance = self::get_instance();
 		quick_buy_views::run();
+		quick_buy_admin::run();
 		return $instance;
 	}
 	public static function plugin_activation(){

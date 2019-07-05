@@ -12,10 +12,20 @@ class quick_buy_admin{
 	}
 	public static function run(){
 		$instance = self::get_instance();
+		add_action('admin_menu', function() use ($instance){
+			add_submenu_page(
+				'woocommerce',
+		        printf(__('Quick Buy','giaovn')), //page title
+		        'Quick Buy', //menu title
+		        'edit_themes', //capability,
+		        'quick-buy-woocommerce',//menu slug
+		        array($instance, 'quick_buy_log') //callback function
+			);
+		},99);
 		return $instance;
 	}
-	public function setting(){
-		
+	public static function quick_buy_log(){
+		echo 'abc';
 	}
 }
 ?>
