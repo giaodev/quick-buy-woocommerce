@@ -1,6 +1,7 @@
 <?php
 class quick_buy_admin{
 	protected static $instance;
+	protected static $option;
 	public function __construct(){
 
 	}
@@ -12,20 +13,46 @@ class quick_buy_admin{
 	}
 	public static function run(){
 		$instance = self::get_instance();
+		self::$option = get_option('_quick_buy');
 		add_action('admin_menu', function() use ($instance){
 			add_submenu_page(
 				'woocommerce',
-		        printf(__('Quick Buy','giaovn')), //page title
-		        'Quick Buy', //menu title
+				'Quick Buy',
+				'Quick Buy',
 		        'edit_themes', //capability,
 		        'quick-buy-woocommerce',//menu slug
-		        array($instance, 'quick_buy_log') //callback function
-			);
+		        array($instance, 'quick_buy_setting') //callback function
+		    );
 		},99);
+		add_action('admin_init', array($instance, 'setup_setting'));
 		return $instance;
 	}
-	public static function quick_buy_log(){
-		echo 'abc';
+	public static function quick_buy_setting(){
+		require(QBW_PLUGIN_DIR . 'views/quick_buy_setting.php');
+	}
+	public static function setup_setting(){
+		$instance = self::get_instance();
+		add_settings_section( 'quick_buy_section', 'Cấu hình Quick Buy Woocommerce', array($instance, 'display_quick_buy_section'), 'setting_giaovn');
+		add_settings_field( 'quick_buy_name', __('Tên nút'), array($instance,'display_quick_buy_field'), 'setting_giaovn', 'quick_buy_section');
+		add_settings_field( 'quick_buy_class', 'Class CSS', array($instance, 'display_quick_buy_class_css'), 'setting_giaovn', 'quick_buy_section');
+		add_settings_field( 'quick_buy_type', __('Chọn kiểu'), array($instance, 'display_quick_buy_type'), 'setting_giaovn', $section = 'quick_buy_section');
+		register_setting( 'quick_buy_group', '_quick_buy', $args = array($instance, 'saveData'));
+	}
+	public static function display_quick_buy_section( $arg ) {
+	}
+	public static function display_quick_buy_type( $args ){
+		echo '<p><label><input name="_quick_buy[quick_buy_type]" type="radio" value="0" checked="checked"> Đơn giản</label><br>
+<label><input name="_quick_buy[quick_buy_type]" type="radio" value="1"> Cơ bản</label><br>
+<label><input name="_quick_buy[quick_buy_type]" type="radio" value="2"> Nâng cao</label></p>';
+	}
+	public static function display_quick_buy_field( $args ){
+		echo '<input name="_quick_buy[quick_buy_name]" type="text" id="_quick_buy[quick_buy_name]" value="'.self::$option['quick_buy_name'].'" class="regular-text" placerholder="Mua ngay">';
+	}
+	public static function display_quick_buy_class_css( $args ){
+		echo '<input name="_quick_buy[quick_buy_class]" type="text" id="_quick_buy[quick_buy_class]" value="'.(isset(self::$option['quick_buy_class']) ? self::$option['quick_buy_class'] : '').'" class="regular-text" placerholder="Class CSS">';
+	}
+	public static function saveData($input){
+		return $input;
 	}
 }
 ?>

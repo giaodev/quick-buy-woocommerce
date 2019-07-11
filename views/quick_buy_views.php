@@ -1,4 +1,5 @@
-<button id="myBtn"><?php printf(__('Mua ngay', 'giaovn')); ?></button>
+<div class="<?php echo $option['quick_buy_class_css'] ?>">
+<button id="myBtn"><?php printf(__($option['quick_buy_name'], 'giaovn')); ?></button>
 
 <!-- The Modal -->
 <div id="myModal" class="modal">
@@ -26,5 +27,7 @@
       </form>
     </div>
   </div>
+
+</div>
 
 </div>

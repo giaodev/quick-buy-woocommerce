@@ -1,8 +1,8 @@
 <?php
 class quick_buy_views{
 	protected static $instance;
+	protected static $option;
 	public function __construct(){
-
 	}
 	public static function get_instance(){
 		if (self::$instance === null) {
@@ -12,6 +12,7 @@ class quick_buy_views{
 	}
 	public static function run(){
 		$instance = self::get_instance();
+		self::$option = get_option('_quick_buy');
 		self::views();
 		self::quick_buy_css();
 		self::quick_buy_js();
@@ -30,6 +31,7 @@ class quick_buy_views{
 					$order->calculate_totals();
 					$order->save();
 				}
+				$option = self::$option;
 				require(QBW_PLUGIN_DIR . 'views/quick_buy_views.php');
 			}, 30);
 		});
