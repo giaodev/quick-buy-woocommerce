@@ -32,7 +32,20 @@ class quick_buy_views{
 					$order->save();
 				}
 				$option = self::$option;
-				require(QBW_PLUGIN_DIR . 'views/quick_buy_views.php');
+				switch ($option['quick_buy_type']) {
+					case '0':
+						require(QBW_PLUGIN_DIR . 'views/quick_buy_views_simple.php');
+						break;
+					case '1':
+						require(QBW_PLUGIN_DIR . 'views/quick_buy_views_basic.php');
+						break;	
+					case '2':
+						require(QBW_PLUGIN_DIR . 'views/quick_buy_views_advanced.php');
+						break;								
+					default:
+						require(QBW_PLUGIN_DIR . 'views/quick_buy_views_simple.php');
+						break;
+				}
 			}, 30);
 		});
 	}
