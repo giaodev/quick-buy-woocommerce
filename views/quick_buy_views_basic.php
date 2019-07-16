@@ -11,7 +11,7 @@
         <span class="close">&times;</span>
         <h2><?php printf(__('Đặt hàng nhanh', 'giaovn')); ?></h2>
       </div>
-      <div class="modal-body">
+      <div class="modal-body" id="content_popup">
         <div class="g_col_4">
           <h3><?php the_title(); ?></h3>
           <div class="image_single_product">
@@ -34,7 +34,7 @@
             <br>
             <label for=""><?php echo __('Ghi chú'); ?></label>
             <textarea name="note" class="input-text " id="note" placeholder="<?php echo __('Ghi chú về đơn hàng..'); ?>" rows="2" cols="5"></textarea>
-            <button type="submit" class="button alt" name="ok" value="<?php echo __('Đặt hàng'); ?>"><?php echo __('Đặt hàng'); ?></button>
+            <button type="submit" class="button alt" name="ok" value="<?php echo __('Đặt hàng'); ?>" id="dat_hang"><?php echo __('Đặt hàng'); ?></button>
           </form>
         </div>
         <div class="clear_fix"></div>
@@ -44,3 +44,36 @@
   </div>
 
 </div>
+
+<script type="text/javascript">
+  (function($){
+   $(document).ready(function(){
+     $('#dat_hang').click(function(){
+       $.ajax({
+         type: "post",
+         dataType: "json",
+         url: "<?php echo admin_url('admin-ajax.php'); ?>",
+         data: {
+           action: "request_ajax",
+           id: <?php echo get_the_ID(); ?>,
+           name: $("input[name='name']").val(),
+           address: $("input[name='address']").val(),
+           phone: $("input[name='phone']").val(),
+           note: $("input[name='note']").val(),
+         },
+         beforeSend: function(){
+         // loading..
+       },
+       success: function(result){
+          $('#content_popup').html(result.data);
+       },
+       error: function(){
+         console.log('Error');
+       }
+     });
+       return false;
+     });
+   });   
+ })(jQuery);
+
+</script>

@@ -16,35 +16,43 @@ class quick_buy_views{
 		self::views();
 		self::quick_buy_css();
 		self::quick_buy_js();
+		add_action( 'wp_ajax_request_ajax', function(){
+			self::request_orders();
+		});
+		add_action( 'wp_ajax_nopriv_request_ajax', function (){
+			self::request_orders();
+		});
 		return $instance;
+	}
+	public static function request_orders(){
+		$order = wc_create_order();
+		$order->add_product( wc_get_product( intval($_POST['id']) ), 1 );
+		$order->set_billing_first_name($_POST['name']);
+		$order->set_billing_address_1( $_POST['address']);
+		$order->set_billing_phone($_POST['phone']);
+		$order->calculate_totals();
+		$order->save();
+		wp_send_json_success( 'Thêm thành công' );
+		wp_die();
 	}
 	public static function views(){
 		add_action('woocommerce_single_product_summary', function(){
 			remove_action('woocommerce_single_product_summary', 'woocommerce_template_single_add_to_cart', 30);
 			add_action('woocommerce_single_product_summary', function(){
-				if (isset($_POST['ok'])) {
-					$order = wc_create_order();
-					$order->add_product( wc_get_product( get_the_id() ), 1 );
-					$order->set_billing_first_name($_POST['name']);
-					$order->set_billing_address_1( $_POST['address']);
-					$order->set_billing_phone($_POST['phone']);
-					$order->calculate_totals();
-					$order->save();
-				}
 				$option = self::$option;
 				switch ($option['quick_buy_type']) {
 					case '0':
-						require(QBW_PLUGIN_DIR . 'views/quick_buy_views_simple.php');
-						break;
+					require(QBW_PLUGIN_DIR . 'views/quick_buy_views_simple.php');
+					break;
 					case '1':
-						require(QBW_PLUGIN_DIR . 'views/quick_buy_views_basic.php');
-						break;	
+					require(QBW_PLUGIN_DIR . 'views/quick_buy_views_basic.php');
+					break;	
 					case '2':
-						require(QBW_PLUGIN_DIR . 'views/quick_buy_views_advanced.php');
-						break;								
+					require(QBW_PLUGIN_DIR . 'views/quick_buy_views_advanced.php');
+					break;								
 					default:
-						require(QBW_PLUGIN_DIR . 'views/quick_buy_views_simple.php');
-						break;
+					require(QBW_PLUGIN_DIR . 'views/quick_buy_views_simple.php');
+					break;
 				}
 			}, 30);
 		});
@@ -70,23 +78,23 @@ class quick_buy_views{
 
 			// When the user clicks the button, open the modal 
 			btn.onclick = function() {
-			  modal.style.display = "block";
+				modal.style.display = "block";
 			}
 
 			// When the user clicks on <span> (x), close the modal
 			span.onclick = function() {
-			  modal.style.display = "none";
+				modal.style.display = "none";
 			}
 
 			// When the user clicks anywhere outside of the modal, close it
 			window.onclick = function(event) {
-			  if (event.target == modal) {
-			    modal.style.display = "none";
-			  }
+				if (event.target == modal) {
+					modal.style.display = "none";
+				}
 			}
-			</script>
-			<?php
-		});
+		</script>
+		<?php
+	});
 	}
 }
 ?>
