@@ -19,7 +19,17 @@
             the_post_thumbnail( 'woocommerce_thumbnail' )
             ?>
           </div>
+          <?php
+          if ($g_product->get_sale_price() == NULL) {
+            ?>
           <p class="price"><?php echo $g_product->get_regular_price(); ?></p>
+            <?php
+          } else {
+            ?>
+          <p class="price"><?php echo $g_product->get_sale_price(); ?></p>
+            <?php
+          }
+          ?>
         </div>
         <div class="g_col_8">
           <form action="" method="post">

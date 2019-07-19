@@ -25,7 +25,8 @@ class quick_buy_views{
 		return $instance;
 	}
 	public static function request_orders(){
-		$order = wc_create_order();
+		$order_data = array('status' => 'processing');
+		$order = wc_create_order($order_data);
 		$order->add_product( wc_get_product( intval($_POST['id']) ), 1 );
 		$order->set_billing_first_name($_POST['name']);
 		$order->set_billing_address_1( $_POST['address']);
