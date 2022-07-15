@@ -36,14 +36,14 @@
             <label for=""><?php echo __('Tên'); ?></label>
             <input type="text" class="input-text " name="name" id="name" placeholder="<?php echo __('Tên'); ?>" value="">
             <br>
+            <label for=""><?php echo __('Email'); ?></label>
+            <input type="text" class="input-text " name="email" id="email" placeholder="<?php echo __('Email'); ?>" value="">
+            <br>
             <label for=""><?php echo __('Địa chỉ'); ?></label>
             <input type="text" class="input-text " name="address" id="address" value="" placeholder="<?php echo __('Địa chỉ'); ?>">
             <br>
             <label for=""><?php echo __('Số điện thoại'); ?></label>
             <input type="tel" class="input-text " name="phone" id="phone" placeholder="<?php echo __('Số điện thoại'); ?>" value="">
-            <br>
-            <label for=""><?php echo __('Ghi chú'); ?></label>
-            <textarea name="note" class="input-text " id="note" placeholder="<?php echo __('Ghi chú về đơn hàng..'); ?>" rows="2" cols="5"></textarea>
             <button type="submit" class="button alt" name="ok" value="<?php echo __('Đặt hàng'); ?>" id="dat_hang"><?php echo __('Đặt hàng'); ?></button>
           </form>
         </div>
@@ -67,9 +67,9 @@
            action: "request_ajax",
            id: <?php echo get_the_ID(); ?>,
            name: $("input[name='name']").val(),
+           email: $("input[name='email']").val(),
            address: $("input[name='address']").val(),
            phone: $("input[name='phone']").val(),
-           note: $("input[name='note']").val(),
          },
          beforeSend: function(){
          // loading..

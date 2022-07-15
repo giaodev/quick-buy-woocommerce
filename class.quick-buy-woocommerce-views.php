@@ -29,11 +29,12 @@ class quick_buy_views{
 		$order = wc_create_order($order_data);
 		$order->add_product( wc_get_product( intval($_POST['id']) ), 1 );
 		$order->set_billing_first_name($_POST['name']);
+		$order->set_billing_email($_POST['email']);
 		$order->set_billing_address_1( $_POST['address']);
 		$order->set_billing_phone($_POST['phone']);
 		$order->calculate_totals();
 		$order->save();
-		wp_send_json_success( 'Thêm thành công' );
+		wp_send_json_success( 'Done!' );
 		wp_die();
 	}
 	public static function views(){
